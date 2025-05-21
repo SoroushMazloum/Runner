@@ -1,0 +1,6 @@
+aeteam	4 : 2	CYRUS	-> aeteam
+EMPEROR-J	14 : 0	Galaxy_coders	-> EMPEROR-J
+aeteam	1 : 8	EMPEROR-J	-> EMPEROR-J
+CYRUS	17 : 0	Galaxy_coders	-> CYRUS
+aeteam	15 : 0	Galaxy_coders	-> aeteam
+CYRUS	0 : 2	EMPEROR-J	-> EMPEROR-J
