@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cp *.rcg.tar.gz Logs -v
-cp *.rcl.tar.gz Logs -v
+cp *.rcg Logs -v
+cp *.rcl Logs -v

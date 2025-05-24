@@ -1,29 +1,33 @@
-import loganalyzer
-from loganalyzer import Parser
-from loganalyzer import Game
-from loganalyzer import Analyzer
 import os
+import re
 
+def get_latest_rcg_file():
+    rcg_files = [f for f in os.listdir('.') if f.endswith('.rcg')]
+    if not rcg_files:
+        return None
+    return max(rcg_files, key=os.path.getctime)
 
-path = os.path.dirname(os.path.realpath(__file__))
-file_names = ""
-for file in os.listdir(path):
-    if file.endswith('.rcg'):
-        file_name = os.path.splitext(file)[0]  # Extract the file name without extension
-        file_names += file_name + ", "
+def get_winner_from_filename(filename):
+    name = os.path.splitext(filename)[0]
+    match = re.match(r'\d+-([\w\-]+)_(\d+)-vs-([\w\-]+)_(\d+)', name)
+    if not match:
+        return "Invalid filename format"
+    
+    team1, score1, team2, score2 = match.group(1), int(match.group(2)), match.group(3), int(match.group(4))
+    if score1 > score2:
+        winner = team1
+    elif score2 > score1:
+        winner = team2
+    else:
+        winner = "Draw"
+    return f"{team1}\t\t\t{score1} : {score2}\t\t\t{team2}\t-> {winner}"
 
-# Remove the trailing comma and space
-file_names = file_names[:-2]
+def main():
+    filename = get_latest_rcg_file()
+    if not filename:
+        print("No .rcg file found.")
+        return
+    print(get_winner_from_filename(filename))
 
-parser = Parser(file_names)
-game = Game(parser)
-analyzer = Analyzer(game)
-analyzer.analyze()
-result = analyzer.game.left_team.name + ' ' + str(analyzer.game.left_goal) + ' vs ' + str(analyzer.game.right_goal) + ' ' + analyzer.game.right_team.name
-os.system(f"echo '{result}' >> Results.txt")
-if analyzer.game.right_goal > analyzer.game.left_goal:
-    print(analyzer.game.right_team.name)
-elif analyzer.game.right_goal < analyzer.game.left_goal:
-    print(analyzer.game.left_team.name)
-else :
-    print('NONE')
+if __name__ == "__main__":
+    main()
