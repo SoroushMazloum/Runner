@@ -113,11 +113,6 @@ case "$m" in
             done
 
             python3 Analyzer/AnalyzeResult.py > Result.txt
-            python3 Analyzer/graph_bar_points.py
-            python3 Analyzer/match_graph_with_winners.py
-	        ./install_Analayzer.sh
-	        ./convert_logs.sh
-	        ./generate_reports.sh
 
         else
             echo "The synch_mode value must be 'true' or 'false'."

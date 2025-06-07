@@ -86,8 +86,13 @@ This script will execute games according to `Games.txt`, save results in wins.tx
 
 - `wins.txt`: Detailed results of each game with winner determination.
 - `Result.txt`: Summary of overall results (wins, losses, draws per team).
-- `Analysis_Results/` folder: Tournament analysis charts and visualizations.
-- `.conf` files in `LogsConf/`: Detailed game analysis using the Namira Log-Analyzer tool.
+- `Analysis_Results/` folder: Tournament analysis charts and visualizations. *
+- `.conf` files in `LogsConf/`: Detailed game analysis using the Namira Log-Analyzer tool. *
+
+*: Analysis must be run manually after the games are finished.
+```bash
+./ANALYZE.sh
+```
 
 # Requirements
 
