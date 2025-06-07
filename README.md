@@ -1,42 +1,116 @@
-# Tournament Runner
-## You can use Tournament Runner to run Soccer Simulation 2D tournaments.
------------------------
+# Runner Tournament Manager
 
+[**English**](README.md) | **[فارسی](README-Fa.md)**
 
+A simple and practical system for running Runner Tournaments with game management, result recording, and visual/text analysis generation capabilities.
 
-### :gear: Get started
+## Introduction
 
-First you should run `Setup.py` and then put all the binaries in `Bins` directory. All binaries must contain `localStartAll` and `start` script.
-After that edit 'Server', 'Channel'  and Bot 'Token' in all files in 'ScBot' directory
+This project is designed to run runner team tournaments. Simply place each team's binary files in the `Bins/` folder, define the games in the `Games.txt` file, and start the tournament by executing the `Run.sh` script.
 
-To run a tournament, put the list of the games in `Games.txt` and then, execute `Run.sh` with
+### Features
+
+- Automatic execution of games between different teams
+- Saving game results in `wins.txt` with winner determination
+- Summary of overall tournament results in `Result.txt`
+- Generation of result analysis charts saved in the `Analysis_Results/` folder
+- Storage of all game logs in the `Logs/` folder
+- Raw game analysis in the `LogsJSON/` folder
+- Detailed game analysis in the `LogsConf/` folder
+
+## Project Structure
+
 ```
+Runner/
+├── Bins/                    # Team executable files
+├── Games.txt                # Game definitions (matches between teams)
+├── wins.txt                 # Game results (output)
+├── Result.txt               # Overall results summary (output)
+├── static/                  # Analysis result images
+├── run.sh                   # Tournament execution script
+├── install_requirements.sh  # Install requirements
+├── Analyzer/                # Processing and analysis scripts
+├── LogsJSON/                # Raw game analysis
+├── LogsConf/                # Detailed game analysis
+├── Logs/                    # Game logs
+└── README.md
+```
+
+## Usage Guide
+
+### Preparing Teams
+
+Place team executable files (binaries) in the `Bins/` folder. Each team must be independently executable.
+
+### Defining Matches
+
+In the `Games.txt` file, every two lines define a match between two teams. The format should be as follows:
+
+Note: Team names must match their display names.
+
+**Mode 1: `Normal (Round-Robin)`:**
+
+```
+Team1
+Team2
+Team3
+Team4
+```
+
+Note: In this mode, the first match will be between `Team1` and `Team2`, and the next match between `Team3` and `Team4`.
+
+**Mode 2: `Elimination (Winner-Stays)`:**
+
+```
+TeamA
+TeamB
+TeamC
+```
+
+Note: In this mode, the first match is between `Team1` and `Team2`, and the winner then plays against `Team3`.
+
+### Running the Tournament
+
+To run the entire tournament, execute the `Run.sh` script and correctly answer the prompts:
+
+Note: You may need to grant execution permission on first run.
+
+```sh
 ./Run.sh
 ```
-After the games are finished, you can see logs (.rcg and .rcl files) compressed to .tar.gz in Logs directory. 
 
-Also, you can see Holes and Clashes table in the terminal when the games are done.
+This script will execute games according to `Games.txt`, save results in wins.txt and `Result.txt`, generate visual analyses in the `Analysis_Results/` folder, and produce detailed game analysis `.conf` files in the `LogsConf/` folder.
 
--------------------------------------------
 
-### :hash: Test Game
+# Outputs
 
-A test game is a short 300 Cycle game against Helios2023. It ONLY has one half and no penalty or extra time.
+- `wins.txt`: Detailed results of each game with winner determination.
+- `Result.txt`: Summary of overall results (wins, losses, draws per team).
+- `Analysis_Results/` folder: Tournament analysis charts and visualizations.
+- `.conf` files in `LogsConf/`: Detailed game analysis using the Namira Log-Analyzer tool.
 
-You can run it with `./TestTeams.sh`
+# Requirements
 
-Note that for test games, you should put the teams list in `TestGames.txt` and Helios2023 should be available in Bins directory.   
+- Python 3.x (with networkx, matplotlib etc.)
+- Execute permission for Run.sh (chmod +x Run.sh)
 
--------------------------------------------
+# Installing Requirements
+Execute the `install_requirements.sh` file:
 
-### :green_book: Note: This Repository uses [HoleAnalyzer](https://github.com/RCSS-IR/HoleAnalyzer) for analyzing Holes&Clashes.
-Thanks go to [Nader Zare](https://github.com/naderzare), [Alireza Sadraii](https://github.com/sadraiiali), [Omid Amini](https://github.com/mroa4) and [Aref Sayareh](https://github.com/Arefsa78) for providing HoleAnalyzer.
+```sh
+./install_requirements.sh
+```
 
---------------------------------------------
+# License
 
-# :heavy_exclamation_mark: Issues
-If you have any problem, do not hesitate to contact me via Email: mazloomsoroush@gmail.com 
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
 
-OR
+# Contact
 
-go to https://github.com/SoroushGit/SummerCup2023-Tournament-Runner and open an issue.
+For issues/questions, please use the repository's Issues section.
+
+---
+
+[**Soroush Mazloum**](https://github.com/SoroushMazloum)
+
+[**Saleh Hamrahi**](https://github.com/SalehHamrahi)

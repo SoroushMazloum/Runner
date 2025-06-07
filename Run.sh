@@ -14,6 +14,8 @@ fi
 
 trap 'rm -f *.rcg *.rcl Analyzer/*.rc*' EXIT
 
+rm -f wins.txt Results.txt LogsConf/*.conf LogsJSON/*.json Logs/*.rc* Analysis_Results/*.png
+
 echo "Major ? (n/y): "
 read m
 echo "synch_mode ? (false/true): "
@@ -28,12 +30,13 @@ case "$m" in
     "n" | "N" | "y" | "Y")
         if [[ "$sm" == "true" || "$sm" == "false" ]]; then
             echo "Start a Tournament Runner ..."
-            ./rcssmonitor --auto-reconnect-mode on --auto-reconnect-wait 2 &
+            rcssmonitor --auto-reconnect-mode on --auto-reconnect-wait 2 &
             chmod +x *.sh
 
             while true
             do
-                sed -i -e '$a\\' Games.txt
+                sed -i '/^\s*$/d' Games.txt
+		        sed -i -e '$a\\' Games.txt
 
                 line_count=$(wc -l < Games.txt)
                 if [ "$line_count" -lt 2 ]; then
@@ -45,9 +48,24 @@ case "$m" in
 
                 case "$m" in
                     "n" | "N")
-                        rcssserver server::fullstate_l=true server::fullstate_r=true server::auto_mode=true server::synch_mode=$sm server::game_log_dir=$(pwd) server::keepaway_log_dir=$(pwd) server::text_log_dir=$(pwd) server::nr_extra_halfs=2 server::penalty_shoot_outs=false & ;;
+                        if [ "$mode" = "1" ]; then
+                            rcssserver server::fullstate_l=true server::fullstate_r=true server::auto_mode=true server::synch_mode=$sm server::game_log_dir=$(pwd) server::keepaway_log_dir=$(pwd) server::text_log_dir=$(pwd) server::nr_extra_halfs=0 server::penalty_shoot_outs=false &
+                        elif [ "$mode" = "2" ]; then
+                            rcssserver server::fullstate_l=true server::fullstate_r=true server::auto_mode=true server::synch_mode=$sm server::game_log_dir=$(pwd) server::keepaway_log_dir=$(pwd) server::text_log_dir=$(pwd) server::nr_extra_halfs=2 server::penalty_shoot_outs=true &
+                        else
+                            echo "Unknown mode selected."
+                            break
+                        fi ;;
+
                     "y" | "Y")
-                        rcssserver server::fullstate_l=false server::fullstate_r=false server::auto_mode=true server::synch_mode=$sm server::game_log_dir=$(pwd) server::keepaway_log_dir=$(pwd) server::text_log_dir=$(pwd) server::nr_extra_halfs=2 server::penalty_shoot_outs=false & ;;
+                        if [ "$mode" = "1" ]; then
+                            rcssserver server::fullstate_l=false server::fullstate_r=false server::auto_mode=true server::synch_mode=$sm server::game_log_dir=$(pwd) server::keepaway_log_dir=$(pwd) server::text_log_dir=$(pwd) server::nr_extra_halfs=0 server::penalty_shoot_outs=false &
+                        elif [ "$mode" = "2" ]; then
+                            rcssserver server::fullstate_l=false server::fullstate_r=false server::auto_mode=true server::synch_mode=$sm server::game_log_dir=$(pwd) server::keepaway_log_dir=$(pwd) server::text_log_dir=$(pwd) server::nr_extra_halfs=2 server::penalty_shoot_outs=true &
+                        else
+                            echo "Unknown mode selected."
+                            break
+                        fi ;;
                     *)
                         echo "The command received is incorrect."
                         break;;
@@ -97,6 +115,9 @@ case "$m" in
             python3 Analyzer/AnalyzeResult.py > Result.txt
             python3 Analyzer/graph_bar_points.py
             python3 Analyzer/match_graph_with_winners.py
+	        ./install_Analayzer.sh
+	        ./convert_logs.sh
+	        ./generate_reports.sh
 
         else
             echo "The synch_mode value must be 'true' or 'false'."
