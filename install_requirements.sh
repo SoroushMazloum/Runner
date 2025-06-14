@@ -12,9 +12,3 @@ source .venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
 
-if grep -Fxq "$ACTIVATE_LINE" "$BASHRC_FILE"; then
-    echo ""
-else
-    echo "" >> "$BASHRC_FILE"
-    echo "$ACTIVATE_LINE" >> "$BASHRC_FILE"
-fi

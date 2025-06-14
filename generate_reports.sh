@@ -6,8 +6,6 @@ if ! command -v jq &>/dev/null; then
   exit 1
 fi
 
-mkdir -p LogsConf
-
 cd ./LogsJSON
 
 for json_file in *.json; do
@@ -97,8 +95,8 @@ Key Statistics:
 
   echo -e "$report_content" >"$output_file"
   echo "Created report: $output_file"
-  mv "$output_file" ../LogsConf/
+  mkdir -p ../Analysis_Results/${json_file%.json}/
+  mv "$output_file" ../Analysis_Results/${json_file%.json}/
 done
 
 echo "All reports generated successfully!"
-
