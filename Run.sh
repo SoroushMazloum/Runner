@@ -95,7 +95,7 @@ case "$m" in
       echo "Result of the game: $full_result"
 
       rm -f Analyzer/*.rc* >/dev/null
-      ./ChangeLogDir.sh >/dev/null
+      ./change_log_dir.sh >/dev/null
       rm -f *.rcg *.rcl >/dev/null
       sleep 1
 

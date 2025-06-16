@@ -20,7 +20,9 @@ def get_winner_from_filename(filename):
         winner = team2
     else:
         winner = "Draw"
-    return f"{team1}\t\t\t{score1} : {score2}\t\t\t{team2}\t-> {winner}"
+    #print(f"{team1}\t\t\t{score1} : {score2}\t\t\t{team2}\t-> {winner}")
+    
+    return f"{winner}"
 
 def main():
     filename = get_latest_rcg_file()
