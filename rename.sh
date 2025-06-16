@@ -1,12 +1,17 @@
 #!/bin/bash
 
-cd Bins || { echo "Not fond Bins"; exit 1; }
+cd Bins || { echo "Bins dir not found"; exit 1; }
 
 for dir in */ ; do
     dir=${dir%/}
-    start_file="$dir/start"
-
-    [ ! -f "$start_file" ] && continue
+    
+    if [ -f "$dir/start" ]; then
+        start_file="$dir/start"
+    elif [ -f "$dir/start.sh" ]; then
+        start_file="$dir/start.sh"
+    else
+        continue
+    fi
 
     teamname=$(grep '^teamname=' "$start_file" | cut -d'"' -f2)
 
