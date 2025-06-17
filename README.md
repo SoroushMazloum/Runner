@@ -1,5 +1,7 @@
 # Runner Tournament Manager
 
+PLEASE READ [LICENSE](https://github.com/soroushmazloum/runner/license) BEFORE USING THIS PROJECT.
+
 [**English**](README.md) | **[فارسی](README-Fa.md)**
 
 A simple and practical system for running Runner Tournaments with game management, result recording, and visual/text analysis generation capabilities.
@@ -109,8 +111,6 @@ Execute the `install_requirements.sh` file:
 ```
 
 ---
-
-# [License](https://github.com/soroushmazloum/runner/license)
 
 # Contact
 
