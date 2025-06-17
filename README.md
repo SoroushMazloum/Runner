@@ -53,13 +53,15 @@ Note: Team names must match their display names.
 ```
 Team1
 Team2
+---
 Team3
 Team4
+---
 ```
 
 Note: In this mode, the first match will be between `Team1` and `Team2`, and the next match between `Team3` and `Team4`.
 
-**Mode 2: `Elimination (Winner-Stays)`:**
+**Mode 2: `Elimination (Stepladder)`:**
 
 ```
 TeamA
