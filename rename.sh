@@ -34,6 +34,6 @@ for dir in */ ; do
         }
         echo -e "Renamed ${YELLOW}$dir${NC} to ${GREEN}$teamname${NC} [${GREEN}OK${NC}]"
     else
-        echo -e "${YELLOW}$dir${NC} ---> ${GREEN}$teamname${NC} [${GREEN}OK${NC}]"
+        echo -e "${GREEN}$teamname${NC} [${GREEN}OK${NC}]"
     fi
 done
