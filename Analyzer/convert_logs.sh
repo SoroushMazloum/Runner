@@ -1,6 +1,6 @@
 #!/bin/bash
 
-log_dir="./Logs"
+log_dir="./../Logs"
 output_dir="./LogsJSON"
 
 mkdir -p "$output_dir"

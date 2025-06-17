@@ -49,8 +49,8 @@ def analyze_and_plot():
     plt.title("Team performance: win, draw, loss")
     plt.legend()
     plt.tight_layout()
-    os.makedirs("Analysis_Results", exist_ok=True)
-    plt.savefig("Analysis_Results/team_stats_chart.png")
+    os.makedirs("Results_analysiss", exist_ok=True)
+    plt.savefig("Results_analysis/team_stats_chart.png")
 
 if __name__ == "__main__":
     analyze_and_plot()

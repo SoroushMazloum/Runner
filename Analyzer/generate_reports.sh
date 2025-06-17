@@ -95,8 +95,8 @@ Key Statistics:
 
   echo -e "$report_content" >"$output_file"
   echo "Created report: $output_file"
-  mkdir -p ../Analysis_Results/${json_file%.json}/
-  mv "$output_file" ../Analysis_Results/${json_file%.json}/
+  mkdir -p ../Results_analysis/${json_file%.json}/
+  mv "$output_file" ../Results_analysis/${json_file%.json}/
 done
 
 echo "All reports generated successfully!"

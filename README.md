@@ -15,7 +15,7 @@ This project is designed to run runner team tournaments. Simply place each team'
 - Automatic execution of games between different teams
 - Saving game results in `wins.txt` with winner determination
 - Summary of overall tournament results in `Result.txt`
-- Generation of result analysis charts saved in the `Analysis_Results/` folder
+- Generation of result analysis charts saved in the `Results_analysis/` folder
 - Storage of all game logs in the `Logs/` folder
 - Raw game analysis in the `LogsJSON/` folder
 - Detailed game analysis in the `LogsConf/` folder
@@ -83,14 +83,14 @@ Note: You may need to grant execution permission on first run.
 ./Run.sh
 ```
 
-This script will execute games according to `Games.txt`, save results in wins.txt and `Result.txt`, generate visual analyses in the `Analysis_Results/` folder, and produce detailed game analysis `.conf` files in the `LogsConf/` folder.
+This script will execute games according to `Games.txt`, save results in wins.txt and `Result.txt`, generate visual analyses in the `Results_analysis/` folder, and produce detailed game analysis `.conf` files in the `LogsConf/` folder.
 
 
 # Outputs
 
 - `wins.txt`: Detailed results of each game with winner determination.
 - `Result.txt`: Summary of overall results (wins, losses, draws per team).
-- `Analysis_Results/` folder: Tournament analysis charts and visualizations. *
+- `Results_analysis/` folder: Tournament analysis charts and visualizations. *
 - `.conf` files in `LogsConf/`: Detailed game analysis using the Namira Log-Analyzer tool. *
 
 *: Analysis must be run manually after the games are finished.

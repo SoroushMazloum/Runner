@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle, Circle, Patch
 import numpy as np
 
-MAIN_OUTPUT_DIR = 'Analysis_Results'
+MAIN_OUTPUT_DIR = 'Results_analysis'
 os.makedirs(MAIN_OUTPUT_DIR, exist_ok=True)
 
 def draw_field(ax):

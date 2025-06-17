@@ -14,8 +14,8 @@ fi
 
 trap 'rm -f *.rcg *.rcl Analyzer/*.rc*' EXIT
 
-rm -f wins.txt Result.txt LogsJSON/*.json Logs/*.rc* Analysis_Results/*.png
-find ./Analysis_Results -maxdepth 1 -mindepth 1 -type d -exec rm -r {} +
+rm -f wins.txt Result.txt LogsJSON/*.json Logs/*.rc* Results_analysis/*.png
+find ./Results_analysis -maxdepth 1 -mindepth 1 -type d -exec rm -r {} +
 
 echo "Major ? (n/y): "
 read m

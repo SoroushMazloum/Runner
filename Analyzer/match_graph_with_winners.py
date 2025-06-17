@@ -131,8 +131,8 @@ def build_colored_match_graph():
     plt.title("Match Result Graph: Directed Wins (Black), Draws (Blue)", fontsize=14)
     plt.axis('off')
     plt.tight_layout()
-    os.makedirs("Analysis_Results", exist_ok=True)
-    plt.savefig("Analysis_Results/match_network_colored.png", dpi=300, bbox_inches='tight')
+    os.makedirs("Results_analysis", exist_ok=True)
+    plt.savefig("Results_analysis/match_network_colored.png", dpi=300, bbox_inches='tight')
 
 if __name__ == "__main__":
     build_colored_match_graph()
