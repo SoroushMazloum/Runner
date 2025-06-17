@@ -108,15 +108,17 @@ Execute the `install_requirements.sh` file:
 ./install_requirements.sh
 ```
 
-# License
+---
 
-This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+# [License](https://github.com/soroushmazloum/runner/license)
 
 # Contact
 
 For issues/questions, please use the repository's Issues section.
 
 ---
+
+# Authors 
 
 [**Soroush Mazloum**](https://github.com/SoroushMazloum)
 
