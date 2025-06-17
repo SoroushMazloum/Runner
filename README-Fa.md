@@ -112,9 +112,6 @@ Team4
 ./install_requirements.sh
 ```
 
-## مجوز
-
-این پروژه تحت مجوز [MIT](https://opensource.org/licenses/MIT) منتشر شده است.
 
 ### ارتباط
 
