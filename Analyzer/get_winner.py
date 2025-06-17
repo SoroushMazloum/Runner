@@ -50,7 +50,7 @@ def result(match_data):
     if match_data['team1_penalty'] is not None and match_data['team2_penalty'] is not None:
         result = f"{match_data['team1']} {match_data['team1_score']}({match_data['team1_penalty']}) - ({match_data['team2_penalty']}){match_data['team2_score']} {match_data['team2']}"
     else:
-        result = f"{match_data['team1']} {match_data['team1_score']} - {match_data['team2']} {match_data['team2_score']}"
+        result = f"{match_data['team1']} {match_data['team1_score']} - {match_data['team2_score']} {match_data['team2']}"
         
     os.system(f"echo '{result}' >> Results.txt")
     

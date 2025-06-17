@@ -6,3 +6,5 @@ rcssserver
 Results.txt
 Games.txt
 .venv/
+*.rcg
+*.rcl
