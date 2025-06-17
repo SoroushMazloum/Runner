@@ -84,7 +84,7 @@ case "$m" in
       sleep 1
 
       cp *.rc* Analyzer -r
-      full_result=$(python3 Analyzer/Say_winner.py)
+      full_result=$(python3 Analyzer/get_winner.py)
       winner=$(echo "$full_result" | awk -F '->' '{print $2}' | xargs)
 
       if [ "$mode" = "2" ] && [ "$winner" = "Draw" ]; then

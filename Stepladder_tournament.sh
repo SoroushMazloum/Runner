@@ -49,7 +49,7 @@ do
     sleep 1
     sed -i '1,2d' Games.txt
     cp *.rc* Analyzer -r
-    winner=$(python3 Analyzer/Say_winner.py)
+    winner=$(python3 Analyzer/get_winner.py)
     rm Analyzer/*.rc*
     echo "$winner"
     ./change_log_dir.sh

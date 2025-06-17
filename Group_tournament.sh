@@ -45,7 +45,7 @@ for(( i=1; i <= $(wc -l < Games.txt); i++)) do
     wait $server_pid
     sleep 1
     cp *.rc* Analyzer -r
-    python3 Analyzer/Say_winner.py
+    python3 Analyzer/get_winner.py
     sleep 4
     rm Analyzer/*.rc*
     ./change_log_dir.sh
