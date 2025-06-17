@@ -33,4 +33,6 @@ if __name__ == "__main__":
                 os.system(f"echo '{teams[j + i]}' >> Games.txt")
                 os.system(f"echo '---' >> Games.txt")
         
-        print("Games generated [\033[32mSuccess\033[0m]")
+    
+    else:
+        print("\033[31mteams.txt is empty \033[0m[\033[31mERROR\033[0m]")
