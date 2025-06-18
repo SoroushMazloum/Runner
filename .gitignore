@@ -1,12 +1,7 @@
 Analyzer/Results_analysis/
 Bins/
-Logs/
 rcssmonitor
 rcssserver
-Results.txt
-Games.txt
 .venv/
 *.rcg
 *.rcl
-teams.txt
-config.conf
