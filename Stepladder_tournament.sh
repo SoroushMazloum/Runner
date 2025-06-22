@@ -39,20 +39,24 @@ do
     team_two=$(sed -n '2p' Games.txt)
 
     rcssserver server::fullstate_l = $FULLSTATE server::fullstate_r = $FULLSTATE server::auto_mode = true server::synch_mode = $SYNCH_MODE server::game_log_dir = `pwd` server::keepaway_log_dir = `pwd` server::text_log_dir = `pwd` server::nr_extra_halfs = 2 server::penalty_shoot_outs = false &
-    sleep 1
+    sleep 2
     server_pid=$!
     sleep 1
     cd Bins/$team_one && ./localStartAll >/dev/null 2>&1 &
-    sleep 1
+    sleep 5
     cd Bins/$team_two && ./localStartAll >/dev/null 2>&1 &
     wait $server_pid
-    sleep 1
+    sleep 5
+    wait $server_pid
+    sleep 2
     sed -i '1,2d' Games.txt
     cp *.rc* Analyzer -r
     winner=$(python3 Analyzer/get_winner.py)
+    sleep 1
     rm Analyzer/*.rc*
     echo "$winner"
     ./change_log_dir.sh
+    sleep 1
     if [ "$winner" = "NONE" ]
     then
         echo "$team_two" > tmpfile
@@ -63,6 +67,6 @@ do
         cat Games.txt >> tmpfile
         mv tmpfile Games.txt
     fi
-    rm *.rcg *.rcl
     sleep 1
+    rm *.rcg *.rcl
 done

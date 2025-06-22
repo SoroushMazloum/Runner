@@ -36,18 +36,21 @@ for(( i=1; i <= $(wc -l < Games.txt); i++)) do
     sed -i '/^\s*$/d' Games.txt
     #edit
     rcssserver server::fullstate_l = $FULLSTATE server::fullstate_r = $FULLSTATE server::auto_mode = true server::synch_mode = $SYNCH_MODE server::game_log_dir = `pwd` server::keepaway_log_dir = `pwd` server::text_log_dir = `pwd` server::nr_extra_halfs = 0 server::penalty_shoot_outs = false &
-    sleep 0.5
+    sleep 2
     server_pid=$!
     sleep 1
     cd Bins/$TEAM && ./localStartAll >/dev/null 2>&1 &
     sleep 5
     cd Bins/$TEAMT && ./localStartAll >/dev/null 2>&1 &
     wait $server_pid
-    sleep 1
+    sleep 5
+    wait $server_pid
+    sleep 2
     cp *.rc* Analyzer -r
     python3 Analyzer/get_winner.py
-    sleep 4
+    sleep 1
     rm Analyzer/*.rc*
     ./change_log_dir.sh
+    sleep 1
     rm *.rcg *.rcl
 done
