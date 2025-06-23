@@ -1,7 +1,9 @@
 #!/bin/bash
 
-RED='\e[31m'
-NC='\e[0m'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
 
 CONFIG_FILE="config.conf"
 
@@ -25,6 +27,7 @@ if [ -z "$SYNCH_MODE" ]; then
 fi
 
 chmod +x *.sh
+rcssmonitor --auto-reconnect-mode on --auto-reconnect-wait 2 &
 
 for(( i=1; i <= $(wc -l < Games.txt); i++)) do
     TEAM=$(sed -n "$i"p Games.txt)
@@ -34,7 +37,7 @@ for(( i=1; i <= $(wc -l < Games.txt); i++)) do
     i=$((i+1))
     TEAMT=$(sed -n "$i"p Games.txt)
     sed -i '/^\s*$/d' Games.txt
-    #edit
+
     rcssserver server::fullstate_l = $FULLSTATE server::fullstate_r = $FULLSTATE server::auto_mode = true server::synch_mode = $SYNCH_MODE server::game_log_dir = `pwd` server::keepaway_log_dir = `pwd` server::text_log_dir = `pwd` server::nr_extra_halfs = 0 server::penalty_shoot_outs = false &
     sleep 0.5
     server_pid=$!
@@ -43,11 +46,12 @@ for(( i=1; i <= $(wc -l < Games.txt); i++)) do
     sleep 5
     cd Bins/$TEAMT && ./localStartAll >/dev/null 2>&1 &
     wait $server_pid
-    sleep 1
-    cp *.rc* Analyzer -r
-    python3 Analyzer/get_winner.py
-    sleep 4
-    rm Analyzer/*.rc*
+    sleep 0.5
+    winner=$(python3 Analyzer/get_winner.py)
+    echo -e "${YELLOW}Winner${NC} : ${GREEN}$winner${NC}"
     ./change_log_dir.sh
+    sleep 5
     rm *.rcg *.rcl
+    echo -e "${RED}=======================================================================${NC}"
 done
+python3 table_generator.py > Table.txt

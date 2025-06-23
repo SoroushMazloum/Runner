@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cp *.rcg Logs -v
-cp *.rcl Logs -v
+cp *.rcg Logs
+cp *.rcl Logs

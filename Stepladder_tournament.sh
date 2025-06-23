@@ -1,7 +1,9 @@
 #!/bin/bash
 
-RED='\e[31m'
-NC='\e[0m'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
 
 CONFIG_FILE="config.conf"
 
@@ -25,14 +27,14 @@ if [ -z "$SYNCH_MODE" ]; then
 fi
 
 chmod +x *.sh
+rcssmonitor --auto-reconnect-mode on --auto-reconnect-wait 2 &
 
 while true
 do
-    #sed -i '/^\s*$/d' Games.txt
     sed -i -e '/./,$!d' -e :a -e '/^\s*$/{$d;N;ba' -e '}' Games.txt
     line_count=$(grep -c . < Games.txt)
     if [ $line_count -eq 1 ]; then
-        echo Breaking
+        echo -e "${RED}Breaking${NC}"
         break;
     fi
     team_one=$(head -n 1 Games.txt)
@@ -46,13 +48,12 @@ do
     sleep 1
     cd Bins/$team_two && ./localStartAll >/dev/null 2>&1 &
     wait $server_pid
-    sleep 1
+    sleep 0.5
     sed -i '1,2d' Games.txt
-    cp *.rc* Analyzer -r
     winner=$(python3 Analyzer/get_winner.py)
-    rm Analyzer/*.rc*
-    echo "$winner"
+    echo -e "${YELLOW}Winner${NC} : ${GREEN}$winner${NC}"
     ./change_log_dir.sh
+    sleep 5
     if [ "$winner" = "NONE" ]
     then
         echo "$team_two" > tmpfile
@@ -65,4 +66,5 @@ do
     fi
     rm *.rcg *.rcl
     sleep 1
+    echo -e "${RED}=======================================================================${NC}"
 done

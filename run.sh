@@ -1,7 +1,9 @@
 #!/bin/bash
 
-RED='\e[31m'
-NC='\e[0m'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
 
 CONFIG_FILE="config.conf"
 
@@ -21,6 +23,7 @@ TYPE=$(echo "$TYPE" | xargs)
 
 if [[ "$TYPE" == "round_robin" ]]; then
   if [[ -f "Group_tournament.sh" && -x "Group_tournament.sh" ]]; then
+    echo -e "${YELLOW}type${NC} : ${GREEN}round_robin${NC}"
     ./Group_tournament.sh
   else
     echo -e "${RED}'Group_tournament.sh' not found or is not executable. [ERROR]${NC}"
@@ -28,6 +31,7 @@ if [[ "$TYPE" == "round_robin" ]]; then
   fi
 elif [[ "$TYPE" == "stepladder" ]]; then
   if [[ -f "Stepladder_tournament.sh" && -x "Stepladder_tournament.sh" ]]; then
+    echo -e "${YELLOW}type${NC} : ${GREEN}stepladder${NC}"
     ./Stepladder_tournament.sh
   else
     echo -e "${RED}'Stepladder_tournament.sh' not found or is not executable. [ERROR]${NC}"

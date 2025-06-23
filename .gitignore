@@ -1,7 +1,15 @@
 Analyzer/Results_analysis/
+Analyzer/LogsJSON/
 Bins/
+Logs/
 rcssmonitor
 rcssserver
+Results.txt
+Games.txt
 .venv/
 *.rcg
 *.rcl
+teams.txt
+TODO
+Table.txt
+Backup/

@@ -1,10 +1,12 @@
 def create_clean_team_table():
+    RED='\033[0;31m'
+    NC='\033[0m'
     try:
         with open('teams.txt', 'r') as file:
             teams = [line.strip() for line in file if line.strip()]
         
         if not teams:
-            print("No teams found in teams.txt")
+            print(f"{RED}No teams found in teams.txt{NC}")
             return
 
         max_len = max(len(team) for team in teams)
@@ -35,6 +37,6 @@ def create_clean_team_table():
             print(row_separator)
     
     except FileNotFoundError:
-        print("teams.txt not found")
+        print(f"{RED}teams.txt not found{NC}")
 
 create_clean_team_table()
