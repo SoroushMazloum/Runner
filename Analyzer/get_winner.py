@@ -43,7 +43,7 @@ def determine_winner(match_data):
             else:
                 return match_data['team2']
         else:
-            return "Draw (no penalties)"
+            return "NONE"
 
 def result(match_data):
     result = None
