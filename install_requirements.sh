@@ -12,4 +12,4 @@ source .venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
 
-echo -e "${GREEN}installing is successful!${NC}"
+echo -e "${GREEN}Installation completed successfully!${NC}"

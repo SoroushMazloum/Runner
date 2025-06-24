@@ -54,4 +54,4 @@ for(( i=1; i <= $(wc -l < Games.txt); i++)) do
     rm *.rcg *.rcl
     echo -e "${RED}=======================================================================${NC}"
 done
-python3 table_generator.py > Table.txt
+python3 table_generator.py

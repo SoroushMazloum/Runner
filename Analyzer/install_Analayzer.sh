@@ -12,5 +12,5 @@ if ! command -v loganalyzer &> /dev/null; then
     cd ..
     sudo rm -rf Namira-LogAnalyzer
 
-    echo -e "${GREEN}installing is successful!${NC}"
+    echo -e "${GREEN}Installation completed successfully!${NC}"
 fi
