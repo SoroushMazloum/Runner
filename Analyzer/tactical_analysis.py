@@ -163,156 +163,208 @@ def get_passing_data(team_data):
             'interceptions': 0
         }
 
-def parse_ranking_file(file_path='Table.txt'):
-    try:
-        with open(file_path, 'r', encoding='utf-8') as f:
-            lines = f.readlines()
-    except FileNotFoundError:
-        return None, False
+def parse_ranking_file():
+    possible_paths = ['Table.txt', '../Table.txt']
+    file_path = None
     
-    is_extended_format = False
-    for line in lines:
-        if 'GF' in line and 'GA' in line and 'GD' in line and 'P' in line:
-            is_extended_format = True
+    for path in possible_paths:
+        if os.path.exists(path):
+            file_path = path
             break
     
-    teams = []
-    
-    if is_extended_format:
-        for line in lines:
-            if not line.strip() or '----' in line or 'Team' in line and 'GF' in line:
-                continue
-                
-            parts = line.split()
-            if not parts[0].isdigit():
-                continue
-                
-            rank = parts[0]
-            
-            team_end_index = len(parts) - 7
-            
-            team_name = ' '.join(parts[1:team_end_index])
-            
-            stats = parts[team_end_index:team_end_index+7]
-            
-            teams.append({
-                'rank': rank,
-                'team': team_name,
-                'W': stats[0],
-                'D': stats[1],
-                'L': stats[2],
-                'GF': stats[3],
-                'GA': stats[4],
-                'GD': stats[5],
-                'P': stats[6]
-            })
-    else:
-        for line in lines:
-            if not line.strip() or '----' in line or 'Team' in line:
-                continue
-                
-            parts = line.split()
-            if not parts or not parts[0].isdigit():
-                continue
-                
-            rank = parts[0]
-            team_name = ' '.join(parts[1:])
-            teams.append({
-                'rank': rank,
-                'team': team_name
-            })
-    
-    return teams, is_extended_format
+    if file_path is None:
+        print("\033[1;33mWarning: Ranking file not found\033[0m")
+        return [], [], {}, False
 
-def draw_ranking_table(ax, ranking_data, is_extended_format, left_team_name, right_team_name):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+    except Exception as e:
+        print(f"\033[1;33mWarning: Error reading ranking file: {str(e)}\033[0m")
+        return [], [], {}, False
+
+    teams = []
+    team_names = []
+    match_results = {}
+    
+    lines = [line.strip() for line in content.split('\n') if line.strip()]
+    
+    # Find header line
+    header_idx = -1
+    for i, line in enumerate(lines):
+        if 'Rank' in line and 'Points' in line and 'TGD' in line:
+            header_idx = i
+            break
+    
+    if header_idx == -1:
+        print("\033[1;33mWarning: Header not found\033[0m")
+        return [], [], {}, False
+    
+    # Process header
+    header_parts = [p.strip() for p in lines[header_idx].split('|') if p.strip()]
+    fixed_columns = {'Rank', 'Points', 'TGD'}
+    
+    # Identify fixed column indices
+    fixed_indices = []
+    for i, part in enumerate(header_parts):
+        if part in fixed_columns:
+            fixed_indices.append(i)
+    
+    if len(fixed_indices) < 3:
+        print("\033[1;33mWarning: Couldn't identify all fixed columns\033[0m")
+        return [], [], {}, False
+    
+    # Team names are all columns before the first fixed column
+    team_names = header_parts[:fixed_indices[0]]
+    
+    # Process data rows
+    for line in lines[header_idx+1:]:
+        # Skip separator lines
+        if line.startswith('+') or line.startswith('-') or line.startswith('='):
+            continue
+            
+        parts = [p.strip() for p in line.split('|') if p.strip()]
+        
+        # Skip lines that don't have enough data
+        if len(parts) < len(team_names) + 3:
+            continue
+            
+        try:
+            # Extract team data (first column is team name)
+            row_team = parts[0]
+            
+            # Skip header rows
+            if row_team in fixed_columns or row_team == 'Team':
+                continue
+                
+            # Skip if team name looks like a separator
+            if all(c in ['=', '-', '+'] for c in row_team):
+                continue
+                
+            # Fixed columns are the last 3
+            rank = parts[-3]
+            points = parts[-2]
+            tgd = parts[-1]
+            
+            # Results are between team name and fixed columns
+            results = parts[1:1+len(team_names)]
+            
+            # Skip if any result looks like a separator
+            if any(all(c in ['=', '-', '+'] for c in r) for r in results):
+                continue
+                
+            teams.append({
+                'team': row_team,
+                'rank': rank,
+                'points': points,
+                'tgd': tgd
+            })
+            
+            # Store match results
+            for idx, col_team in enumerate(team_names):
+                if idx < len(results) and row_team != col_team:
+                    # Skip if result is a separator pattern
+                    if not all(c in ['=', '-', '+'] for c in results[idx]):
+                        match_results[(row_team, col_team)] = results[idx]
+                    
+        except Exception as e:
+            print(f"\033[1;33mWarning: Error parsing line: {line} - {str(e)}\033[0m")
+            continue
+
+    has_data = len(teams) > 0
+    return teams, team_names, match_results, has_data
+
+def draw_ranking_table(ax, teams, team_names, match_results, has_data, left_team_name, right_team_name):
     ax.set_axis_off()
     
-    if not ranking_data:
+    if not has_data:
         ax.text(0.5, 0.5, "No ranking data available", 
                 ha='center', va='center', fontsize=12)
         return
     
     try:
-        if is_extended_format:
-            col_labels = ['Rank', 'Team', 'W', 'D', 'L', 'GF', 'GA', 'GD', 'P']
-            col_widths = [0.05, 0.35, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05]
-        else:
-            col_labels = ['Rank', 'Team']
-            col_widths = [0.1, 0.9]
+        team_width = max(max(len(team['team']) for team in teams), 7)
+        result_width = 7
+        rank_width = 5
+        points_width = 7
+        tgd_width = 5
         
-        cell_data = []
-        teams_in_ranking = []
-
-        for team in ranking_data:
-            row = [team['rank'], team['team']]
-            if is_extended_format:
-                row.extend([
-                    team.get('W', '0'),
-                    team.get('D', '0'),
-                    team.get('L', '0'),
-                    team.get('GF', '0'),
-                    team.get('GA', '0'),
-                    team.get('GD', '0'),
-                    team.get('P', '0')
-                ])
-            cell_data.append(row)
-            teams_in_ranking.append(team['team'])
-
-        left_in_ranking = left_team_name in teams_in_ranking
-        right_in_ranking = right_team_name in teams_in_ranking
+        cell_text = []
+        row_labels = []
         
-        if not (left_in_ranking and right_in_ranking):
-            missing_teams = []
-            if not left_in_ranking:
-                missing_teams.append(left_team_name)
-            if not right_in_ranking:
-                missing_teams.append(right_team_name)
-                
-            ax.text(0.5, 0.5, f"Teams not in ranking: {', '.join(missing_teams)}", 
-                    ha='center', va='center', fontsize=12, color='red')
-            return
+        for team in teams:
+            row_data = []
+            row_labels.append(team['team'])
+            
+            for opponent in team_names:
+                if team['team'] == opponent:
+                    row_data.append('#')
+                else:
+                    result = match_results.get((team['team'], opponent), '-')
+                    row_data.append(result)
+            
+            row_data.append(team['rank'])
+            row_data.append(team['points'])
+            row_data.append(team['tgd'])
+            cell_text.append(row_data)
+        
+        column_labels = list(team_names) + ['Rank', 'Points', 'TGD']
         
         table = ax.table(
-            cellText=cell_data,
-            colLabels=col_labels,
-            colWidths=col_widths,
+            cellText=cell_text,
+            rowLabels=row_labels,
+            colLabels=column_labels,
             cellLoc='center',
-            loc='center'
+            loc='center',
+            bbox=[0.1, 0.1, 0.9, 0.8]
         )
+        
+        # Bold specific headers
+        for j, col_label in enumerate(column_labels):
+            cell = table[(0, j)]  # Header row
+            if col_label in ['Rank', 'Points', 'TGD']:
+                cell.get_text().set_weight('bold')  # Apply bold
         
         table.auto_set_font_size(False)
         table.set_fontsize(10)
         table.scale(1, 1.5)
         
-        for i, label in enumerate(col_labels):
-            cell = table[0, i]
-            cell.set_facecolor('#1f77b4')
-            cell.set_text_props(color='white', weight='bold')
+        for key, cell in table.get_celld().items():
+            cell.get_text().set_color('black')
         
-        for i in range(1, len(cell_data) + 1):
-            color = '#f0f0f0' if i % 2 == 1 else '#ffffff'
-            team_name = cell_data[i-1][1]
-            
-            text_color = 'black'
-            cell_color = color
-            
-            if team_name == left_team_name:
-                cell_color = '#e6f0ff'
-                text_color = '#1f77b4'
-            elif team_name == right_team_name:
-                cell_color = '#ffe6e6'
-                text_color = '#d62728'
-            
-            for j in range(len(col_labels)):
-                cell = table[i, j]
-                cell.set_facecolor(cell_color)
-                
-                if j == 1:
-                    cell.get_text().set_color(text_color)
-                    cell.get_text().set_weight('bold')
+        light_purple = '#e6d4ff'
         
-        ax.set_title('Tournament Standings', fontsize=14, pad=20, weight='bold')
-    
+        left_idx = None
+        right_idx = None
+        
+        for i, team in enumerate(teams):
+            if team['team'] == left_team_name:
+                left_idx = i
+            if team['team'] == right_team_name:
+                right_idx = i
+        
+        if left_idx is not None and right_idx is not None:
+            if right_team_name in team_names:
+                col_idx = team_names.index(right_team_name)
+                cell = table[(left_idx+1, col_idx)]
+                cell.set_facecolor(light_purple)
+                cell.get_text().set_weight('bold')
+            
+            if left_team_name in team_names:
+                col_idx = team_names.index(left_team_name)
+                cell = table[(right_idx+1, col_idx)]
+                cell.set_facecolor(light_purple)
+                cell.get_text().set_weight('bold')
+        
+        for i, team in enumerate(teams):
+            for j, opponent in enumerate(team_names):
+                if team['team'] == opponent:
+                    cell = table[(i+1, j)]
+                    cell.set_facecolor('black')
+                    cell.get_text().set_text('')
+        
+        ax.set_title('Tournament Standings', fontsize=14, pad=20, weight='bold', loc='center')
+        
     except Exception as e:
         ax.text(0.5, 0.5, f"Error drawing table: {str(e)}", 
                 ha='center', va='center', fontsize=12, color='red')
@@ -424,7 +476,7 @@ def plot_shooting_positions(team_data, team_name, ax, is_left_team):
 
 def process_json_files(directory):
 
-    ranking_data, is_extended_format = parse_ranking_file()
+    teams, team_names, match_results, has_data = parse_ranking_file()
     
     for filename in os.listdir(directory):
         if filename.endswith('.json'):
@@ -494,7 +546,7 @@ def process_json_files(directory):
                 plot_shooting_positions(left_team, left_team_name, ax4, True)
                 plot_shooting_positions(right_team, right_team_name, ax4, False)
 
-                draw_ranking_table(ax5, ranking_data, is_extended_format, left_team_name, right_team_name)
+                draw_ranking_table(ax5, teams, team_names, match_results, has_data, left_team_name, right_team_name)
                 
                 handles, labels = ax4.get_legend_handles_labels()
                 unique_labels = dict(zip(labels, handles))
