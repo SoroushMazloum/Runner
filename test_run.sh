@@ -26,7 +26,7 @@ if [ -z "$SYNCH_MODE" ]; then
     exit 1
 fi
 
-chmod +x *.sh
+chmod +x *
 rcssmonitor --auto-reconnect-mode on --auto-reconnect-wait 2 &
 
 for(( i=1; i <= $(wc -l < Games_test.txt); i++)) do
@@ -48,7 +48,7 @@ for(( i=1; i <= $(wc -l < Games_test.txt); i++)) do
     wait $server_pid
     sleep 0.5
     ./change_log_dir.sh
-    sleep 5
+    sleep 15
     rm *.rcg *.rcl
     echo -e "${RED}=======================================================================${NC}"
 done

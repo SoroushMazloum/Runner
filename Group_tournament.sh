@@ -50,7 +50,7 @@ for(( i=1; i <= $(wc -l < Games.txt); i++)) do
     winner=$(python3 Analyzer/get_winner.py)
     echo -e "${YELLOW}Winner${NC} : ${GREEN}$winner${NC}"
     ./change_log_dir.sh
-    sleep 5
+    sleep 15
     rm *.rcg *.rcl
     echo -e "${RED}=======================================================================${NC}"
 done

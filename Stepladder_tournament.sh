@@ -53,7 +53,7 @@ do
     winner=$(python3 Analyzer/get_winner.py)
     echo -e "${YELLOW}Winner${NC} : ${GREEN}$winner${NC}"
     ./change_log_dir.sh
-    sleep 5
+    sleep 15
     if [ "$winner" = "NONE" ]
     then
         echo "$team_two" > tmpfile
