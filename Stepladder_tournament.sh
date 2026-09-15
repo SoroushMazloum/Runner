@@ -27,7 +27,7 @@ if [ -z "$SYNCH_MODE" ]; then
 fi
 
 chmod +x *.sh
-rcssmonitor --auto-reconnect-mode on --auto-reconnect-wait 2 &
+rcssmonitor --auto-reconnect-mode on --auto-reconnect-wait 7 &
 
 while true
 do
