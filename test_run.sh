@@ -38,7 +38,7 @@ for(( i=1; i <= $(wc -l < Games_test.txt); i++)) do
     TEAMT="helios"
     sed -i '/^\s*$/d' Games_test.txt
 
-    rcssserver server::fullstate_l = $FULLSTATE server::fullstate_r = $FULLSTATE server::auto_mode = true server::synch_mode = $SYNCH_MODE server::game_log_dir = `pwd` server::keepaway_log_dir = `pwd` server::text_log_dir = `pwd` server::nr_extra_halfs = 0 server::penalty_shoot_outs = false server::nr_normal_halfs = 0 server::nr_extra_halfs = 1 &
+    rcssserver server::fullstate_l = $FULLSTATE server::fullstate_r = $FULLSTATE server::auto_mode = true server::synch_mode = $SYNCH_MODE server::game_log_dir = `pwd` server::keepaway_log_dir = `pwd` server::text_log_dir = `pwd` server::nr_extra_halfs = 0 server::penalty_shoot_outs = false server::nr_normal_halfs = 1 server::nr_extra_halfs = 0 server::half_time = 30 &
     sleep 0.5
     server_pid=$!
     sleep 1
