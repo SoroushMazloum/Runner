@@ -27,7 +27,7 @@ if [ -z "$SYNCH_MODE" ]; then
 fi
 
 chmod +x *
-rcssmonitor --auto-reconnect-mode on --auto-reconnect-wait 7 &
+rcssmonitor --auto-reconnect-mode on --auto-reconnect-wait 4 &
 
 for(( i=1; i <= $(wc -l < Games_test.txt); i++)) do
     TEAM=$(sed -n "$i"p Games_test.txt)
